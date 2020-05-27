@@ -56,7 +56,6 @@ async function run(): Promise<void> {
     const deployRepo = core.getInput('deploy-repo')
     const repo = `${github.context.repo.owner}/${deployRepo || github.context.repo.repo}`
     const repoURL = `https://${accessToken}@github.com/${repo}.git`
-    console.log('Ready to deploy your new shiny site!')
     console.log(`Deploying to repo: ${repo} and branch: ${deployBranch}`)
     console.log('You can configure the deploy branch by setting the `deploy-branch` input for this action.')
 
@@ -67,7 +66,7 @@ async function run(): Promise<void> {
     await exec.exec(`git config user.email`, [`${github.context.actor}@users.noreply.github.com`], {cwd: './public'})
 
     await exec.exec(`git add`, ['.'], {cwd: './public'})
-    await exec.exec(`git commit`, ['-m', `deployed via Gatsby Publish Action 🎩 for ${github.context.sha}`], {
+    await exec.exec(`git commit`, ['-m', `deployed via Gatsby Publish Action`], {
       cwd: './public',
     })
 
@@ -75,8 +74,6 @@ async function run(): Promise<void> {
       cwd: './public',
     })
     console.log('Finished deploying your site.')
-
-    console.log('Enjoy! ✨')
   } catch (err) {
     core.setFailed(err.message)
   }
